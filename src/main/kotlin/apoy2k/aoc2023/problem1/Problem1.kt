@@ -3,43 +3,31 @@ package apoy2k.aoc2023.problem1
 import apoy2k.aoc2023.readInput
 
 fun main() {
-    val map = mapOf(
-        "one" to "1",
-        "two" to "2",
-        "three" to "3",
-        "four" to "4",
-        "five" to "5",
-        "six" to "6",
-        "seven" to "7",
-        "eight" to "8",
-        "nine" to "9"
-    )
-    val result = readInput("problem1/input.txt").lines()
-        .map { line ->
-            var result = ""
-            var currentMatch = ""
-            line.forEach {
-                currentMatch += it
-                if (it.isNumber()) {
-                    result += currentMatch
-                    currentMatch = ""
-                }
-                val foundKey = map.keys.firstOrNull { k -> currentMatch.contains(k) }
-                if (foundKey != null) {
-                    result += map[foundKey]
-                    currentMatch = ""
-                }
-            }
-            result
-        }
-        .sumOf { line ->
-            val numbers = match.findAll(line).map { it.value }
-            val result = "${numbers.first()}${numbers.last()}"
-            println(result)
-            result.toInt()
-        }
-    println(result)
+    println("Part 1: ${part1()}")
+    println("Part 2: ${part2()}")
 }
 
-private val match = "\\d".toRegex()
-private fun Char.isNumber() = match.matches(this.toString())
+private fun part1() = solve(map.values.toSet())
+
+private fun part2() = solve(map.keys + map.values)
+
+private fun solve(numbers: Set<String>) = readInput("problem1/input.txt").lines()
+    .sumOf {
+        val first = it.findAnyOf(numbers)?.second?.toNumber() ?: error("no first digit")
+        val last = it.findLastAnyOf(numbers)?.second?.toNumber() ?: error("no last digit")
+        "$first$last".toInt()
+    }
+
+private fun String.toNumber() = toIntOrNull() ?: map[this]?.toInt() ?: error("cannot convert $this to number")
+
+private val map = mapOf(
+    "one" to "1",
+    "two" to "2",
+    "three" to "3",
+    "four" to "4",
+    "five" to "5",
+    "six" to "6",
+    "seven" to "7",
+    "eight" to "8",
+    "nine" to "9"
+)
