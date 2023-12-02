@@ -11,14 +11,14 @@ private fun part1() = solve(map.values.toSet())
 
 private fun part2() = solve(map.keys + map.values)
 
-private fun solve(numbers: Set<String>) = readInput("problem1/input.txt").lines()
+private fun solve(numbers: Set<String>) = readInput("problem1.txt")
     .sumOf {
-        val first = it.findAnyOf(numbers)?.second?.toNumber() ?: error("no first digit")
-        val last = it.findLastAnyOf(numbers)?.second?.toNumber() ?: error("no last digit")
+        val first = it.findAnyOf(numbers)?.second?.toNumber() ?: error("no first digit for '$it'")
+        val last = it.findLastAnyOf(numbers)?.second?.toNumber() ?: error("no last digit for '$it'")
         "$first$last".toInt()
     }
 
-private fun String.toNumber() = toIntOrNull() ?: map[this]?.toInt() ?: error("cannot convert $this to number")
+private fun String.toNumber() = toIntOrNull() ?: map[this]?.toInt() ?: error("cannot convert '$this' to number")
 
 private val map = mapOf(
     "one" to "1",
